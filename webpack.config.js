@@ -23,6 +23,14 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.s[ac]ss$/i, // .scss나 .sass 파일 처리
+        use: [
+          'style-loader', // JS에서 CSS를 DOM에 추가
+          'css-loader', // CSS 파일 읽기
+          'sass-loader', // SCSS를 CSS로 컴파일
+        ],
+      },
     ],
   },
   resolve: {
@@ -30,7 +38,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './dist/index.html', // HTML 템플릿 경로
+      template: './dist/index.html',
     }),
     process.env.NODE_ENV === 'development' && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
