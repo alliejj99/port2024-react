@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -15,6 +16,11 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            plugins: [
+              process.env.NODE_ENV === 'development' && require.resolve('react-refresh/babel'),
+            ].filter(Boolean),
+          },
         },
       },
     ],
@@ -26,12 +32,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './dist/index.html', // HTML 템플릿 경로
     }),
-  ],
+    process.env.NODE_ENV === 'development' && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
     },
     compress: true,
     port: 8080,
+    hot: true, // HMR 활성화
   },
 };
